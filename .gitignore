@@ -1,0 +1,7 @@
+__pycache__
+settings.ini
+credentials.json
+token.json
+data.json
+test.py
+calender.db
