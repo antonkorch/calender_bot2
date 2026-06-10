@@ -36,16 +36,16 @@ def calender_bot():
     def get_calendar_service():
         """Авторизация в Google и получение сервиса Календаря."""
         creds = None
-        if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        if os.path.exists(f'{dir_path}/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{dir_path}/token.json', SCOPES)
         
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+                flow = InstalledAppFlow.from_client_secrets_file(f'{dir_path}/credentials.json', SCOPES)
                 creds = flow.run_local_server(port=0)
-            with open('token.json', 'w') as token:
+            with open(f'{dir_path}/token.json', 'w') as token:
                 token.write(creds.to_json())
                 
         return build('calendar', 'v3', credentials=creds)
@@ -143,7 +143,8 @@ def calender_bot():
             f"Текущие дата и время: {now_str}. "
             f"Используйте предоставленные инструменты (functions) для работы с расписанием пользователя. "
             f"Если длительность события не указана, планируйте встречу на 1 час. "
-            f"Отвечайте на русском языке."
+            f"Если не указано отдельно, работай в часовом поясе UTC+3"
+            f"Отвечайте на русском языке, пол женский, стиль дружелюбный"
         )
 
         try:
